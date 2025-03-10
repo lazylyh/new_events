@@ -1,0 +1,4 @@
+- model=base
+- dataset=base
+- dataset.path=/home/lyh/bflow_new/events.h5
+- +checkpoint.path=/home/lyh/bflow_new/E_LU5_BD10.ckpt

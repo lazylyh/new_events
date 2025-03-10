@@ -1,0 +1,71 @@
+dataset:
+  load_voxel_grid: true
+  normalize_voxel_grid: true
+  path: /home/lyh/bflow_new/dataset
+  photo_augm: false
+  return_ev: true
+  return_img: true
+  name: vbts
+  extended_voxel_grid: true
+  downsample: false
+  flow_every_n_ms: 50
+  num_bins: 25
+model:
+  num_bins:
+    context: 41
+    correlation: 25
+  num_iter:
+    train: 12
+    test: 12
+  correlation:
+    use_cosine_sim: false
+    ev:
+      target_indices:
+      - 8
+      - 16
+      - 24
+      - 32
+      - 40
+      levels:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 4
+      radius:
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+    img:
+      levels: 4
+      radius: 4
+  hidden:
+    dim: 128
+  context:
+    dim: 41
+    norm: batch
+  feature:
+    dim: 256
+    norm: instance
+  motion:
+    dim: 128
+  name: raft-spline
+  detach_bezier: false
+  bezier_degree: 10
+  use_boundary_images: true
+  use_events: true
+  use_gma: true
+checkpoint: /home/lyh/bflow_new/E_LU5_BD10.ckpt
+hardware:
+  num_workers: 4
+  gpus: 0
+batch_size: 8
+training:
+  multi_loss: true
+  batch_size: 3
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  lr_scheduler:
+    use: true

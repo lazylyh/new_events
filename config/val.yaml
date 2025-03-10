@@ -1,0 +1,13 @@
+defaults:
+  - dataset: "/home/lyh/bflow_new/events.h5"
+  - model: ???
+  - _self_
+
+checkpoint: ???
+hardware:
+  num_workers: 4 #子进程
+  gpus: 0 # GPU idx (multi-gpu not supported for validation)
+batch_size: 8
+dataset:
+  name: ???  # 或 multiflow_regen
+  path: /home/lyh/bflow_new/events.h5

@@ -1,0 +1,126 @@
+# # defaults:
+# #   - dataset: "vbts"
+# #   - model: "raft-spline"
+# #   - _self_
+
+# checkpoint: "/home/lyh/bflow_new/E_LU5_BD10.ckpt"
+# hardware:
+#   num_workers: 4 #子进程
+#   gpus: 0 # GPU idx (multi-gpu not supported for validation)
+# batch_size: 8
+# dataset:
+#   # 路径配置
+#   name: 'vbts'  # 或 multiflow_regen
+#   path: /home/lyh/bflow_new/dataset
+#   return_img: true               # 是否加载图像数据（默认true）
+#   return_ev: true                # 是否加载事件流数据（默认true）
+
+#   # Voxel Grid参数
+#   load_voxel_grid: true          # 是否加载体素栅格
+#   normalize_voxel_grid: true     # 是否标准化体素栅格
+#   extended_voxel_grid: false     # 是否使用扩展体素栅格
+
+#   # 时序处理
+#   flow_every_n_ms: 50            # 光流生成时间步长（单位：毫秒）
+  
+#   # 空间处理
+#   downsample: 2                  # 下采样系数（必须能被输入尺寸整除）
+  
+#   # 数据增强
+#   photo_augm: true               # 启用光度增强
+
+
+  
+# training:
+#   multi_loss: false   # 是否启用多阶段损失训练
+
+
+# model:
+
+#   num_iter:
+#     train: 24   # 训练时的迭代次数（示例值）
+#     test: 32    # 测试/推理时的迭代次数（示例值）  
+#   # 时间窗口配置
+#   num_bins:
+#     context: 4     # 上下文时间窗口数量（对应voxel_grid中的历史信息）
+#     correlation: 2 # 相关性计算的时间窗口数（需与数据预处理匹配）
+  
+#   # 贝塞尔曲线参数
+#   bezier_degree: 3    # 曲线阶数（建议3-5，阶数越高曲线越复杂）
+#   detach_bezier: true # 是否在迭代中切断梯度回传（True加速推理，False提升训练精度）
+  
+#   # 多模态开关
+#   use_boundary_images: true # 是否融合传统图像数据（需同时输入images参数）
+#   use_events: true          # 是否使用事件数据（需输入voxel_grid）
+  
+#   # 相关性计算配置
+#   # correlation:
+#   #   use_cosine_sim: true    # 使用余弦相似度代替点积相似度
+#   #   ev:                     # 事件数据相关配置
+#   #     target_indices: [1,3] # 关联的时间索引（需小于num_bins.context）
+#   #     levels: 4             # 特征金字塔层数（每层感受野翻倍）
+#   #   img:                    # 图像数据相关配置
+#   #     levels: 3             
+#   #     radius: 4            # 搜索半径（像素单位）
+#   correlation:
+#     use_cosine_sim: true    # 使用余弦相似度代替点积相似度
+#     ev:
+#       target_indices: [1, 2, 3] # 0 idx is the reference. num_bins_context - 1 is the maximum idx.
+#       levels: [1, 2, 3] # Number of pyramid levels. Must have the same length as target_indices.
+#       radius: [4, 4, 4] # Look-up radius. Must have the same length as target_indices.
+#     img:
+#       levels: 4
+#       radius: 4  
+#   # 网络维度配置
+#   hidden:
+#     dim: 128     # GRU隐藏层维度（影响模型容量）
+#   context:
+#     dim: 128     # 上下文特征维度
+#     norm: "batch" # 归一化方式（可选"batch"/"instance"/null）
+#   feature:
+#     dim: 256     # 特征提取网络输出维度
+#     norm: "batch"
+
+
+
+
+
+
+defaults:
+  - dataset: "vbts"
+  - model: "raft-spline"
+  - _self_
+
+checkpoint: "/home/lyh/bflow_new/E_LU5_BD10.ckpt"
+hardware:
+  num_workers: 4
+  gpus: 0 # GPU idx (multi-gpu not supported for validation)
+batch_size: 8
+training:
+  multi_loss: true
+  batch_size: 3
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  lr_scheduler:
+    use: true
+model:
+  num_bins:
+    context: 41
+    correlation: 25
+  bezier_degree: 10
+  use_boundary_images: true
+  use_events: true
+  correlation:
+    ev:
+      #target_indices: [1, 2, 3, 4, 5] # for 6 context bins
+      #target_indices: [2, 4, 6, 8, 10] # for 11 context bins
+      target_indices: [8, 16, 24, 32, 40] # for 41 context bins
+      levels: [1, 1, 1, 1, 4]
+      radius: [4, 4, 4, 4, 4]
+    img:
+      levels: 4
+      radius: 4
+
+# @package _global_
+
+

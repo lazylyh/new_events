@@ -1,0 +1,60 @@
+dataset:
+  load_voxel_grid: true
+  normalize_voxel_grid: true
+  path: ???
+  photo_augm: false
+  return_ev: true
+  return_img: true
+  name: vbts
+  extended_voxel_grid: true
+  downsample: false
+  flow_every_n_ms: 50
+model:
+  num_bins:
+    context: 5
+    correlation: null
+  num_iter:
+    train: 12
+    test: 12
+  correlation:
+    use_cosine_sim: false
+    ev:
+      target_indices:
+      - 1
+      - 2
+      - 3
+      - 4
+      levels:
+      - 1
+      - 2
+      - 3
+      - 4
+      radius:
+      - 4
+      - 4
+      - 4
+      - 4
+    img:
+      levels: 4
+      radius: 4
+  hidden:
+    dim: 128
+  context:
+    dim: 128
+    norm: batch
+  feature:
+    dim: 256
+    norm: instance
+  motion:
+    dim: 128
+  name: raft-spline
+  detach_bezier: false
+  bezier_degree: 2
+  use_boundary_images: true
+  use_events: true
+  use_gma: false
+checkpoint: /home/lyh/bflow_new/E_LU5_BD10.ckpt
+hardware:
+  num_workers: 4
+  gpus: 0
+batch_size: 8

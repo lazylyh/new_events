@@ -1,6 +1,0 @@
-- model=raft-spline
-- dataset=multiflow_regen
-- dataset.path=/home/lyh/bflow_new/dataset
-- hardware.gpus=0
-- +experiment/multiflow/raft_spline=E_LU5_BD10_lowpyramid
-- checkpoint=/home/lyh/bflow_new/E_LU5_BD10.ckpt
